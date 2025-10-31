@@ -1,6 +1,7 @@
 "use client";
 
 import { useApp } from "@/contexts/AppContext";
+import TradingViewWidget from "@/components/TradingView";
 
 export default function Home() {
   const { chain } = useApp();
@@ -22,7 +23,10 @@ export default function Home() {
         <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-white mb-4">Price Chart</h2>
           <div className="h-96 flex items-center justify-center text-gray-500">
-            Chart component will be embedded here
+            <TradingViewWidget
+              baseSymbol={chain === "solana" ? "SOL" : "ETH"}
+              quoteSymbol="ETH"
+            />
           </div>
         </div>
 

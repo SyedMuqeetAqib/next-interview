@@ -1,7 +1,6 @@
 "use client";
 
 import { useApp } from "@/contexts/AppContext";
-import { Chain } from "@/contexts/AppContext";
 
 export default function Navbar() {
   const { chain, setChain } = useApp();

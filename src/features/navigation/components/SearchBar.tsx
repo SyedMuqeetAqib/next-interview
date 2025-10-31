@@ -30,7 +30,7 @@ const SearchBar = () => {
         onChange={(e) => setSearchValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search pool address..."
-        className="w-64 rounded-lg border border-gray-800 bg-gray-900 px-4 py-2 text-sm text-white placeholder-gray-500 focus:border-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-700"
+        className="w-48 sm:w-64 rounded-lg border border-border bg-input px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all shadow-sm"
       />
     </form>
   );

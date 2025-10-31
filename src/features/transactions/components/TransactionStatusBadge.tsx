@@ -11,8 +11,8 @@ export default function TransactionStatusBadge({
     <span
       className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
         action === "buy"
-          ? "bg-green-500/20 text-green-400"
-          : "bg-red-500/20 text-red-400"
+          ? "bg-[oklch(0.65_0.15_160/0.2)] text-[oklch(0.70_0.15_160)] border border-[oklch(0.70_0.15_160/0.3)]"
+          : "bg-destructive/20 text-destructive border border-destructive/30"
       }`}
     >
       {action.toUpperCase()}

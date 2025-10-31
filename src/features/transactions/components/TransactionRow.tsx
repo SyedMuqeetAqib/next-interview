@@ -28,31 +28,31 @@ export default function TransactionRow({
   return (
     <TableRow
       key={transaction.txHash || index}
-      className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors"
+      className="border-b border-border hover:bg-muted/30 transition-colors"
     >
-      <TableCell className="py-5 px-6 text-sm text-gray-300">
+      <TableCell className="py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-sm text-foreground font-medium">
         {formatTime(transaction.time)}
       </TableCell>
-      <TableCell className="py-5 px-6">
+      <TableCell className="py-3 sm:py-4 px-4 sm:px-6">
         <TransactionStatusBadge action={transaction.action} />
       </TableCell>
-      <TableCell className="py-5 px-6 text-sm text-gray-300 text-right">
+      <TableCell className="py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-sm text-foreground text-right font-medium">
         {transaction.amountNative}
       </TableCell>
-      <TableCell className="py-5 px-6 text-sm text-gray-300 text-right">
+      <TableCell className="py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-sm text-foreground text-right font-medium">
         {transaction.amountToken}
       </TableCell>
-      <TableCell className="py-5 px-6 text-sm text-gray-300 font-mono">
+      <TableCell className="py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-sm text-foreground font-mono">
         {transaction.wallet.includes("...")
           ? transaction.wallet
           : formatAddress(transaction.wallet)}
       </TableCell>
-      <TableCell className="py-5 px-6 text-sm text-gray-300 font-mono">
+      <TableCell className="py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-sm font-mono">
         <a
           href={`https://solscan.io/tx/${transaction.txHash}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-400 hover:text-blue-300 transition-colors"
+          className="text-primary hover:text-primary font-semibold transition-colors underline decoration-primary/50 underline-offset-2"
         >
           {formatAddress(transaction.txHash, 8)}
         </a>

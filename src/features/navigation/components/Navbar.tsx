@@ -8,30 +8,32 @@ export default function Navbar() {
   const { chain, setChain } = useApp();
 
   return (
-    <nav className="w-full border-b border-gray-800 bg-gray-950">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+    <nav className="w-full border-b border-border bg-card backdrop-blur-sm shadow-sm">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         {/* Logo */}
-        <div className="flex items-center gap-8">
-          <h1 className="text-xl font-semibold text-white">Mockswap</h1>
+        <div className="flex items-center gap-6 sm:gap-8">
+          <h1 className="text-lg sm:text-xl font-semibold text-primary drop-shadow-sm hover:text-primary/80 transition-colors">
+            Mockswap
+          </h1>
 
           {/* Chain Toggle */}
-          <div className="flex items-center gap-2 rounded-lg bg-gray-900 p-1">
+          <div className="flex items-center gap-1 rounded-lg bg-secondary p-1 border border-border">
             <button
               onClick={() => setChain(SUPPORTED_CHAINS.ETHEREUM)}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+              className={`px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
                 chain === SUPPORTED_CHAINS.ETHEREUM
-                  ? "bg-gray-800 text-white shadow-sm"
-                  : "text-gray-400 hover:text-gray-300"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/40 border border-primary/50"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
               Ethereum
             </button>
             <button
               onClick={() => setChain(SUPPORTED_CHAINS.SOLANA)}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+              className={`px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
                 chain === "solana"
-                  ? "bg-gray-800 text-white shadow-sm"
-                  : "text-gray-400 hover:text-gray-300"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/40 border border-primary/50"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
               Solana
@@ -40,14 +42,14 @@ export default function Navbar() {
         </div>
 
         {/* Right Side */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {/* Search Bar */}
           <SearchBar />
 
           {/* Trading Page Link */}
           <a
             href="#"
-            className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+            className="text-xs sm:text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
           >
             Trading Page
           </a>

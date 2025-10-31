@@ -101,7 +101,7 @@ export default function PoolClient({
           </div>
 
           {/* Buy Widget - Takes 1 column */}
-          <BuyWidget />
+          <BuyWidget poolAddress={poolAddress} chain={effectiveChain} />
         </div>
 
         {/* Transactions Table - Full width below */}

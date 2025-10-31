@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full border-b border-gray-800 bg-gray-950">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         {/* Logo */}
         <div className="flex items-center gap-8">
           <h1 className="text-xl font-semibold text-white">Mockswap</h1>

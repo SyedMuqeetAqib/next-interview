@@ -16,14 +16,14 @@ export default function PoolComponent() {
   console.log("🚀 ~ PoolPage ~ poolAddress:", poolAddress);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-6 py-8">
       <PoolHeader />
 
       <div className="grid gap-6">
         {/* Chart & Buy Widget Side by Side */}
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Chart Section - Takes 2 columns */}
-          <div className="lg:col-span-2 rounded-lg border border-gray-800 bg-gray-900 p-6">
+          <div className="lg:col-span-2 rounded-lg border border-gray-800 bg-gray-900 p-8">
             <h2 className="text-lg font-semibold text-white mb-4">
               Price Chart
             </h2>

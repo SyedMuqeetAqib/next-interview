@@ -6,7 +6,7 @@ export default function BuyWidget() {
   const { chain } = useApp();
 
   return (
-    <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+    <div className="rounded-lg border border-gray-800 bg-gray-900 p-8">
       <h2 className="text-lg font-semibold text-white mb-4">Buy Tokens</h2>
       <div className="space-y-4">
         <div>

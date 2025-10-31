@@ -30,24 +30,24 @@ export default function TransactionRow({
       key={transaction.txHash || index}
       className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors"
     >
-      <TableCell className="py-4 px-6 text-sm text-gray-300">
+      <TableCell className="py-5 px-6 text-sm text-gray-300">
         {formatTime(transaction.time)}
       </TableCell>
-      <TableCell className="py-4 px-6">
+      <TableCell className="py-5 px-6">
         <TransactionStatusBadge action={transaction.action} />
       </TableCell>
-      <TableCell className="py-4 px-6 text-sm text-gray-300 text-right">
+      <TableCell className="py-5 px-6 text-sm text-gray-300 text-right">
         {transaction.amountNative}
       </TableCell>
-      <TableCell className="py-4 px-6 text-sm text-gray-300 text-right">
+      <TableCell className="py-5 px-6 text-sm text-gray-300 text-right">
         {transaction.amountToken}
       </TableCell>
-      <TableCell className="py-4 px-6 text-sm text-gray-300 font-mono">
+      <TableCell className="py-5 px-6 text-sm text-gray-300 font-mono">
         {transaction.wallet.includes("...")
           ? transaction.wallet
           : formatAddress(transaction.wallet)}
       </TableCell>
-      <TableCell className="py-4 px-6 text-sm text-gray-300 font-mono">
+      <TableCell className="py-5 px-6 text-sm text-gray-300 font-mono">
         <a
           href={`https://solscan.io/tx/${transaction.txHash}`}
           target="_blank"

@@ -18,7 +18,7 @@ const TransactionTable = ({ poolAddress }: { poolAddress: string }) => {
 
   if (loading) {
     return (
-      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-lg border border-gray-800 bg-gray-950 p-8">
         <h2 className="text-lg font-semibold text-white mb-4">
           Latest Transactions
         </h2>
@@ -29,7 +29,7 @@ const TransactionTable = ({ poolAddress }: { poolAddress: string }) => {
 
   if (error) {
     return (
-      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-lg border border-gray-800 bg-gray-950 p-8">
         <h2 className="text-lg font-semibold text-white mb-4">
           Latest Transactions
         </h2>
@@ -40,7 +40,7 @@ const TransactionTable = ({ poolAddress }: { poolAddress: string }) => {
 
   if (!transactions || transactions.length === 0) {
     return (
-      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-lg border border-gray-800 bg-gray-950 p-8">
         <h2 className="text-lg font-semibold text-white mb-4">
           Latest Transactions
         </h2>
@@ -50,29 +50,29 @@ const TransactionTable = ({ poolAddress }: { poolAddress: string }) => {
   }
 
   return (
-    <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+    <div className="rounded-lg border border-gray-800 bg-gray-950 p-8 overflow-x-auto">
       <h2 className="text-lg font-semibold text-white mb-4">
         Latest Transactions
       </h2>
       <Table>
         <TableHeader>
           <TableRow className="border-b border-gray-800">
-            <TableHead className="text-left py-4 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <TableHead className="text-left py-5 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Time
             </TableHead>
-            <TableHead className="text-left py-4 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <TableHead className="text-left py-5 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Action
             </TableHead>
-            <TableHead className="text-right py-4 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <TableHead className="text-right py-5 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Amount (Native)
             </TableHead>
-            <TableHead className="text-right py-4 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <TableHead className="text-right py-5 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Amount (Token)
             </TableHead>
-            <TableHead className="text-left py-4 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <TableHead className="text-left py-5 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Wallet
             </TableHead>
-            <TableHead className="text-left py-4 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <TableHead className="text-left py-5 px-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Transaction Hash
             </TableHead>
           </TableRow>

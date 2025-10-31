@@ -21,11 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} antialiased bg-gray-950`}>
         <AppProvider>
           <div className="min-h-screen bg-gray-950">
             <Navbar />
-            <main className="w-full">{children}</main>
+            <main className="w-full px-4 py-6">{children}</main>
           </div>
         </AppProvider>
       </body>

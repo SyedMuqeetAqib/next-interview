@@ -17,11 +17,19 @@ function TradingViewWidget({
   useEffect(() => {
     if (!container.current) return;
 
-    // Clear any existing scripts
-    const existingScript = container.current.querySelector("script");
-    if (existingScript) {
-      container.current.removeChild(existingScript);
+    // Completely clear the container to remove any existing TradingView widget
+    // TradingView creates more than just a script - it creates iframes and other DOM elements
+    // We need to remove ALL children (scripts, iframes, divs) to prevent duplicate widgets
+    while (container.current.firstChild) {
+      container.current.removeChild(container.current.firstChild);
     }
+
+    // Recreate the widget container div that TradingView expects
+    const widgetDiv = document.createElement("div");
+    widgetDiv.className = "tradingview-widget-container__widget";
+    widgetDiv.style.height = "calc(100% - 32px)";
+    widgetDiv.style.width = "100%";
+    container.current.appendChild(widgetDiv);
 
     const script = document.createElement("script");
     script.src =
@@ -56,8 +64,11 @@ function TradingViewWidget({
     container.current.appendChild(script);
 
     return () => {
-      if (container.current && script.parentNode) {
-        container.current.removeChild(script);
+      // Cleanup: clear the entire container when component unmounts or symbol changes
+      if (container.current) {
+        while (container.current.firstChild) {
+          container.current.removeChild(container.current.firstChild);
+        }
       }
     };
   }, [symbol]);
@@ -68,10 +79,7 @@ function TradingViewWidget({
       ref={container}
       style={{ height: "100%", width: "100%" }}
     >
-      <div
-        className="tradingview-widget-container__widget"
-        style={{ height: "calc(100% - 32px)", width: "100%" }}
-      ></div>
+      {/* This div will be recreated by the useEffect to ensure clean state */}
     </div>
   );
 }

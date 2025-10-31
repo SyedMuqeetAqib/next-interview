@@ -2,6 +2,6 @@
 
 import PoolComponent from "@/features/pool/components/PoolComponent";
 
-export default function Home() {
+export default function PoolPage() {
   return <PoolComponent />;
 }

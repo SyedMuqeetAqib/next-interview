@@ -1,8 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 
-export type Chain = "ethereum" | "solana";
+export type Chain = (typeof SUPPORTED_CHAINS)[keyof typeof SUPPORTED_CHAINS];
 
 interface AppContextType {
   chain: Chain;
@@ -12,7 +13,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [chain, setChain] = useState<Chain>("solana");
+  const [chain, setChain] = useState<Chain>(SUPPORTED_CHAINS.SOLANA);
 
   return (
     <AppContext.Provider value={{ chain, setChain }}>

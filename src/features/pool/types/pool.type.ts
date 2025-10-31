@@ -1,4 +1,4 @@
-import { Chain } from "../contexts/AppContext";
+import { Chain } from "@/shared/contexts/AppContext";
 
 export interface Pool {
   address: string;

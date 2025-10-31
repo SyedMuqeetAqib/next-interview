@@ -1,6 +1,8 @@
 "use client";
 
-import { useApp } from "@/contexts/AppContext";
+import { useApp } from "@/shared/contexts/AppContext";
+import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const { chain, setChain } = useApp();
@@ -15,9 +17,9 @@ export default function Navbar() {
           {/* Chain Toggle */}
           <div className="flex items-center gap-2 rounded-lg bg-gray-900 p-1">
             <button
-              onClick={() => setChain("ethereum")}
+              onClick={() => setChain(SUPPORTED_CHAINS.ETHEREUM)}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                chain === "ethereum"
+                chain === SUPPORTED_CHAINS.ETHEREUM
                   ? "bg-gray-800 text-white shadow-sm"
                   : "text-gray-400 hover:text-gray-300"
               }`}
@@ -25,7 +27,7 @@ export default function Navbar() {
               Ethereum
             </button>
             <button
-              onClick={() => setChain("solana")}
+              onClick={() => setChain(SUPPORTED_CHAINS.SOLANA)}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                 chain === "solana"
                   ? "bg-gray-800 text-white shadow-sm"
@@ -40,13 +42,7 @@ export default function Navbar() {
         {/* Right Side */}
         <div className="flex items-center gap-4">
           {/* Search Bar */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search pool address..."
-              className="w-64 rounded-lg border border-gray-800 bg-gray-900 px-4 py-2 text-sm text-white placeholder-gray-500 focus:border-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-700"
-            />
-          </div>
+          <SearchBar />
 
           {/* Trading Page Link */}
           <a

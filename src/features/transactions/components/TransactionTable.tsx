@@ -2,19 +2,31 @@ import React from "react";
 import { useApp } from "@/shared/contexts/AppContext";
 import { useTransactions } from "../hooks/useTransactions";
 import { Transaction } from "../types/transaction.type";
+import { SerializableTransaction } from "../services/serverTransactions";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/shared/components/ui/table";
 import TransactionRow from "./TransactionRow";
 
-const TransactionTable = ({ poolAddress }: { poolAddress: string }) => {
+interface TransactionTableProps {
+  poolAddress: string;
+  initialTransactions?: SerializableTransaction[];
+}
+
+const TransactionTable = ({
+  poolAddress,
+  initialTransactions,
+}: TransactionTableProps) => {
   const { chain } = useApp();
-  const { transactions, loading, error } = useTransactions(poolAddress, chain);
+  const { transactions, loading, error } = useTransactions(
+    poolAddress,
+    chain,
+    initialTransactions
+  );
 
   if (loading) {
     return (

@@ -1,7 +1,58 @@
-"use client";
+import { Suspense } from "react";
+import PoolClient from "@/features/pool/components/PoolClient";
+import { fetchInitialTransactions } from "@/features/transactions/services/serverTransactions";
+import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
+import { DEFAULT_ADDRESS_ON_LANDING_PAGE } from "@/shared/constants/raydiumUrls.constant";
 
-import PoolComponent from "@/features/pool/components/PoolComponent";
+interface PoolPageProps {
+  params: Promise<{
+    address: string;
+  }>;
+  searchParams: Promise<{
+    chain?: string;
+  }>;
+}
 
-export default function PoolPage() {
-  return <PoolComponent />;
+export default async function PoolPage({
+  params,
+  searchParams,
+}: PoolPageProps) {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  const poolAddress = resolvedParams.address ?? DEFAULT_ADDRESS_ON_LANDING_PAGE;
+
+  // Extract chain from search params, validate and default to SOLANA
+  let chain = SUPPORTED_CHAINS.SOLANA;
+  if (resolvedSearchParams.chain) {
+    const chainParam = resolvedSearchParams.chain.toLowerCase();
+    if (
+      chainParam === SUPPORTED_CHAINS.SOLANA ||
+      chainParam === SUPPORTED_CHAINS.ETHEREUM
+    ) {
+      chain = chainParam as SUPPORTED_CHAINS;
+    }
+  }
+
+  // Fetch initial transactions server-side
+  let initialTransactions;
+  try {
+    initialTransactions = await fetchInitialTransactions(poolAddress, chain, {
+      limit: 10,
+    });
+  } catch (error) {
+    // If server-side fetch fails, we'll let the client handle the error
+    // Pass undefined so client can show loading/error state
+    console.error("Server-side transaction fetch failed:", error);
+    initialTransactions = undefined;
+  }
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PoolClient
+        poolAddress={poolAddress}
+        initialTransactions={initialTransactions}
+        chain={chain}
+      />
+    </Suspense>
+  );
 }

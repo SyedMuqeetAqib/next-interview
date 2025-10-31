@@ -3,11 +3,25 @@ import { Chain } from "@/shared/contexts/AppContext";
 import { Transaction } from "../types/transaction.type";
 import { getTransactionsForAddress } from "../services/helius";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
+import { SerializableTransaction } from "../services/serverTransactions";
 
 // hooks/useTransactions.ts
-export function useTransactions(poolAddress: string, chain: Chain) {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
+export function useTransactions(
+  poolAddress: string,
+  chain: Chain,
+  initialTransactions?: SerializableTransaction[]
+) {
+  // Initialize with initial transactions if provided (convert ISO strings to Dates)
+  const [transactions, setTransactions] = useState<Transaction[]>(() => {
+    if (initialTransactions) {
+      return initialTransactions.map((tx) => ({
+        ...tx,
+        time: new Date(tx.time),
+      }));
+    }
+    return [];
+  });
+  const [loading, setLoading] = useState(!initialTransactions);
   const [error, setError] = useState<string | null>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -49,10 +63,14 @@ export function useTransactions(poolAddress: string, chain: Chain) {
       }
     };
 
-    // Initial fetch
-    fetchTransactions();
+    // Only fetch immediately if we don't have initial transactions
+    // Otherwise, start polling right away with initial data already loaded
+    if (!initialTransactions) {
+      fetchTransactions();
+    }
 
     // Set up polling for real-time updates (poll every 15 seconds)
+    // Start immediately - initialTransactions will be used on mount, then polling updates
     pollingIntervalRef.current = setInterval(fetchTransactions, 15000);
 
     // Cleanup on unmount
@@ -61,7 +79,7 @@ export function useTransactions(poolAddress: string, chain: Chain) {
         clearInterval(pollingIntervalRef.current);
       }
     };
-  }, [poolAddress, chain]);
+  }, [poolAddress, chain, initialTransactions]);
 
   return { transactions, loading, error };
 }

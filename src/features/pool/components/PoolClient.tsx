@@ -1,23 +1,37 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import TradingViewWidget from "@/features/trading/components/TradingView";
 import TransactionTable from "@/features/transactions/components/TransactionTable";
-import { DEFAULT_ADDRESS_ON_LANDING_PAGE } from "@/shared/constants/raydiumUrls.constant";
 import { useApp } from "@/shared/contexts/AppContext";
 import { useTransactions } from "@/features/transactions/hooks/useTransactions";
-import PoolHeader from "./PoolHeader";
 import BuyWidget from "./BuyWidget";
+import { SerializableTransaction } from "@/features/transactions/services/serverTransactions";
+import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 
-export default function PoolComponent() {
-  const params = useParams();
-  const { chain } = useApp();
-  const poolAddress =
-    (params.address as string) ?? DEFAULT_ADDRESS_ON_LANDING_PAGE;
+interface PoolClientProps {
+  poolAddress: string;
+  initialTransactions?: SerializableTransaction[];
+  chain: SUPPORTED_CHAINS;
+}
+
+export default function PoolClient({
+  poolAddress,
+  initialTransactions,
+  chain,
+}: PoolClientProps) {
+  const { chain: contextChain } = useApp();
   console.log("🚀 ~ PoolPage ~ poolAddress:", poolAddress);
 
-  // Check for transaction errors
-  const { error: transactionError } = useTransactions(poolAddress, chain);
+  // Use chain from props (server-side) but allow context to override on client
+  // For polling, use context chain which may be updated by user
+  const effectiveChain = contextChain || chain;
+
+  // Check for transaction errors using the hook with initial data
+  const { error: transactionError } = useTransactions(
+    poolAddress,
+    effectiveChain,
+    initialTransactions
+  );
 
   // Check if error is related to invalid address (HTTP 400 with "invalid address" message)
   const isInvalidAddressError =
@@ -78,7 +92,9 @@ export default function PoolComponent() {
             </h2>
             <div className="h-80 sm:h-96 flex items-center justify-center text-muted-foreground rounded-lg bg-muted/30 border border-border/50">
               <TradingViewWidget
-                baseSymbol={chain === "solana" ? "SOL" : "ETH"}
+                baseSymbol={
+                  effectiveChain === SUPPORTED_CHAINS.SOLANA ? "SOL" : "ETH"
+                }
                 quoteSymbol="ETH"
               />
             </div>
@@ -89,7 +105,10 @@ export default function PoolComponent() {
         </div>
 
         {/* Transactions Table - Full width below */}
-        <TransactionTable poolAddress={poolAddress} />
+        <TransactionTable
+          poolAddress={poolAddress}
+          initialTransactions={initialTransactions}
+        />
       </div>
     </div>
   );

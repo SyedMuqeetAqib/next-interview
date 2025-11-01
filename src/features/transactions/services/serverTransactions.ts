@@ -1,4 +1,8 @@
-import { getTransactionsForAddress } from "./helius";
+import {
+  getTransactionsForAddress,
+  parseTransaction,
+  HeliusTransaction,
+} from "./helius";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 
 export interface SerializableTransaction {
@@ -22,20 +26,45 @@ export async function fetchInitialTransactions(
       return [];
     }
 
-    const signatures = await getTransactionsForAddress(poolAddress, chain, {
+    const result = await getTransactionsForAddress(poolAddress, chain, {
       limit: options?.limit || 10,
     });
 
-    const transformedTransactions: SerializableTransaction[] = signatures
+    const transformedTransactions: SerializableTransaction[] = result
       .slice(0, options?.limit || 10)
-      .map((signature, index) => ({
-        time: new Date(Date.now() - index * 60000).toISOString(),
-        action: (index % 2 === 0 ? "buy" : "sell") as "buy" | "sell",
-        amountNative: (Math.random() * 5).toFixed(4),
-        amountToken: (Math.random() * 1000).toFixed(2),
-        wallet: signature.slice(0, 8) + "..." + signature.slice(-8),
-        txHash: signature,
-      }));
+      .map((item) => {
+        // If it's a string (signature), we can't parse it without details
+        if (typeof item === "string") {
+          // Fallback: return a basic transaction structure
+          return {
+            time: new Date().toISOString(),
+            action: "buy" as const,
+            amountNative: "0",
+            amountToken: "0",
+            wallet: item.slice(0, 8) + "..." + item.slice(-8),
+            txHash: item,
+          };
+        }
+        // If it's a HeliusTransaction object, parse it
+        const parsed = parseTransaction(item as HeliusTransaction);
+        if (!parsed) {
+          // Fallback if parsing fails
+          return {
+            time: new Date().toISOString(),
+            action: "buy" as const,
+            amountNative: "0",
+            amountToken: "0",
+            wallet:
+              item.signature.slice(0, 8) + "..." + item.signature.slice(-8),
+            txHash: item.signature,
+          };
+        }
+        return {
+          ...parsed,
+          time: parsed.time.toISOString(),
+        };
+      })
+      .filter((tx) => tx !== null);
 
     return transformedTransactions;
   } catch (error) {

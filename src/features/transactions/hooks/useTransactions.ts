@@ -1,7 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { Chain } from "@/shared/contexts/AppContext";
 import { Transaction } from "../types/transaction.type";
-import { getTransactionsForAddress } from "../services/helius";
+import {
+  getTransactionsForAddress,
+  parseTransaction,
+  HeliusTransaction,
+} from "../services/helius";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 import { SerializableTransaction } from "../services/serverTransactions";
 
@@ -32,20 +36,31 @@ export function useTransactions(
     const fetchTransactions = async () => {
       try {
         setError(null);
-        const signatures = await getTransactionsForAddress(poolAddress, chain, {
+        const result = await getTransactionsForAddress(poolAddress, chain, {
           limit: 10,
         });
+        console.log("🚀 ~ fetchTransactions ~ result:", result);
 
-        const transformedTransactions: Transaction[] = signatures
+        // Parse transactions - result can be either string[] or HeliusTransaction[]
+        const transformedTransactions: Transaction[] = result
           .slice(0, 10)
-          .map((signature, index) => ({
-            time: new Date(Date.now() - index * 60000),
-            action: index % 2 === 0 ? "buy" : "sell",
-            amountNative: (Math.random() * 5).toFixed(4),
-            amountToken: (Math.random() * 1000).toFixed(2),
-            wallet: signature.slice(0, 8) + "..." + signature.slice(-8),
-            txHash: signature,
-          }));
+          .map((item) => {
+            // If it's a string (signature), we can't parse it without details
+            if (typeof item === "string") {
+              // Fallback: return a basic transaction structure
+              return {
+                time: new Date(),
+                action: "buy" as const,
+                amountNative: "0",
+                amountToken: "0",
+                wallet: item.slice(0, 8) + "..." + item.slice(-8),
+                txHash: item,
+              };
+            }
+            // If it's a HeliusTransaction object, parse it
+            return parseTransaction(item as HeliusTransaction);
+          })
+          .filter((tx): tx is Transaction => tx !== null);
 
         setTransactions(transformedTransactions);
         setLoading(false);

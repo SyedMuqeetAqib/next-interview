@@ -27,6 +27,7 @@ const TransactionTable = ({
     chain,
     initialTransactions
   );
+  console.log("🚀 ~ TransactionTable ~ transactions:", transactions);
 
   if (loading) {
     return (

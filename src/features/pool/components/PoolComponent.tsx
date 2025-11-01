@@ -76,7 +76,7 @@ export default function PoolComponent() {
             <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
               Price Chart
             </h2>
-            <div className="h-80 sm:h-96 flex items-center justify-center text-muted-foreground rounded-lg bg-muted/30 border border-border/50">
+            <div className="h-80 sm:h-96 flex items-center justify-center text-muted-foreground rounded-lg bg-muted/30 border border-border/50 overflow-hidden">
               <TradingViewWidget poolAddress={poolAddress} chain={chain} />
             </div>
           </div>

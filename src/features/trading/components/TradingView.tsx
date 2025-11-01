@@ -32,6 +32,7 @@ function TradingViewWidget({
       iframe.style.width = "100%";
       iframe.style.height = "100%";
       iframe.style.border = "none";
+      iframe.style.borderRadius = "0.5rem"; // Match rounded-lg (8px)
       iframe.setAttribute("loading", "lazy");
       iframe.title = "DexScreener Chart";
       container.current.appendChild(iframe);
@@ -55,6 +56,8 @@ function TradingViewWidget({
     widgetDiv.className = "tradingview-widget-container__widget";
     widgetDiv.style.height = "calc(100% - 32px)";
     widgetDiv.style.width = "100%";
+    widgetDiv.style.borderRadius = "0.5rem"; // Match rounded-lg (8px)
+    widgetDiv.style.overflow = "hidden"; // Clip content to border radius
     container.current.appendChild(widgetDiv);
 
     const script = document.createElement("script");
@@ -103,7 +106,12 @@ function TradingViewWidget({
     <div
       className="tradingview-widget-container"
       ref={container}
-      style={{ height: "100%", width: "100%" }}
+      style={{
+        height: "100%",
+        width: "100%",
+        borderRadius: "0.5rem", // Match rounded-lg (8px)
+        overflow: "hidden", // Clip content to border radius
+      }}
     >
       {/* Widget will be injected by useEffect */}
     </div>

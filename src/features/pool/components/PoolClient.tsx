@@ -7,17 +7,20 @@ import { useTransactions } from "@/features/transactions/hooks/useTransactions";
 import BuyWidget from "./BuyWidget";
 import { SerializableTransaction } from "@/features/transactions/services/serverTransactions";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
+import { PoolInfo } from "../types/raydium.type";
 
 interface PoolClientProps {
   poolAddress: string;
   initialTransactions?: SerializableTransaction[];
   chain: SUPPORTED_CHAINS;
+  poolInfo: PoolInfo | null;
 }
 
 export default function PoolClient({
   poolAddress,
   initialTransactions,
   chain,
+  poolInfo,
 }: PoolClientProps) {
   const { chain: contextChain } = useApp();
   console.log("🚀 ~ PoolPage ~ poolAddress:", poolAddress);
@@ -86,7 +89,7 @@ export default function PoolClient({
         {/* Chart & Buy Widget Side by Side */}
         <div className="grid gap-4 sm:gap-5 lg:gap-6 lg:grid-cols-3">
           {/* Chart Section - Takes 2 columns */}
-          <div className="lg:col-span-2 rounded-xl border border-primary/10 bg-card p-4 sm:p-5 lg:p-6 backdrop-blur-sm shadow-lg shadow-primary/10">
+          <div className="lg:col-span-2 rounded-xl border border-primary/20 bg-card/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 shadow-inner">
             <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
               Price Chart
             </h2>
@@ -101,7 +104,11 @@ export default function PoolClient({
           </div>
 
           {/* Buy Widget - Takes 1 column */}
-          <BuyWidget poolAddress={poolAddress} chain={effectiveChain} />
+          <BuyWidget
+            poolAddress={poolAddress}
+            chain={effectiveChain}
+            poolInfo={poolInfo}
+          />
         </div>
 
         {/* Transactions Table - Full width below */}

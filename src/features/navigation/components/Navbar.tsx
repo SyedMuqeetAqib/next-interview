@@ -8,7 +8,7 @@ export default function Navbar() {
   const { chain, setChain } = useApp();
 
   return (
-    <nav className="w-full border-b border-border bg-card backdrop-blur-sm shadow-sm">
+    <nav className="w-full border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         {/* Logo */}
         <div className="flex items-center gap-6 sm:gap-8">

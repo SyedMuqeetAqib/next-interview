@@ -21,11 +21,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} antialiased bg-background`}>
+      <body className={`${inter.variable} antialiased`}>
+        {/* Gradient background overlay */}
+        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" />
+        <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent pointer-events-none" />
+        <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom_left,var(--tw-gradient-stops))] from-accent/15 via-transparent to-transparent pointer-events-none" />
+
         <AppProvider>
-          <div className="min-h-screen bg-background">
+          <div className="min-h-screen relative">
             <Navbar />
-            <main className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6">
+            <main className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 relative">
               {children}
             </main>
           </div>

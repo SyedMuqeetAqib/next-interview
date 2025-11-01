@@ -30,7 +30,7 @@ const TransactionTable = ({
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-border bg-card p-4 sm:p-5 lg:p-6 backdrop-blur-sm shadow-lg shadow-primary/10 border-primary/10">
+      <div className="rounded-xl border border-primary/20 bg-card/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 shadow-inner">
         <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
           Latest Transactions
         </h2>
@@ -43,7 +43,7 @@ const TransactionTable = ({
 
   if (error) {
     return (
-      <div className="rounded-xl border border-border bg-card p-4 sm:p-5 lg:p-6 backdrop-blur-sm shadow-lg shadow-primary/10 border-primary/10">
+      <div className="rounded-xl border border-primary/20 bg-card/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 shadow-inner">
         <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
           Latest Transactions
         </h2>
@@ -56,7 +56,7 @@ const TransactionTable = ({
 
   if (!transactions || transactions.length === 0) {
     return (
-      <div className="rounded-xl border border-border bg-card p-4 sm:p-5 lg:p-6 backdrop-blur-sm shadow-lg shadow-primary/10 border-primary/10">
+      <div className="rounded-xl border border-primary/20 bg-card/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 shadow-inner">
         <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
           Latest Transactions
         </h2>
@@ -68,7 +68,7 @@ const TransactionTable = ({
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4 sm:p-5 lg:p-6 backdrop-blur-sm shadow-lg shadow-primary/10 border-primary/10 overflow-x-auto">
+    <div className="rounded-xl border border-primary/10 bg-card p-4 sm:p-5 lg:p-6 backdrop-blur-sm overflow-x-auto">
       <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
         Latest Transactions
       </h2>

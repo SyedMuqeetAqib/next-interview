@@ -20,7 +20,10 @@ export default async function PoolPage({
 }: PoolPageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  const poolAddress = resolvedParams.address ?? DEFAULT_ADDRESS_ON_LANDING_PAGE;
+  // Decode the address to preserve case and handle URL encoding
+  const poolAddress = resolvedParams.address
+    ? decodeURIComponent(resolvedParams.address)
+    : DEFAULT_ADDRESS_ON_LANDING_PAGE;
 
   // Extract chain from search params, validate and default to SOLANA
   let chain = SUPPORTED_CHAINS.SOLANA;

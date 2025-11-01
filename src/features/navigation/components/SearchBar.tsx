@@ -10,7 +10,8 @@ const SearchBar = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchValue.trim()) {
       const address = searchValue.trim();
-      router.push(`/pool/${address}`);
+      // Use encodeURIComponent to preserve case in the URL
+      router.push(`/pool/${encodeURIComponent(address)}`);
     }
   };
 
@@ -18,7 +19,8 @@ const SearchBar = () => {
     e.preventDefault();
     if (searchValue.trim()) {
       const address = searchValue.trim();
-      router.push(`/pool/${address}`);
+      // Use encodeURIComponent to preserve case in the URL
+      router.push(`/pool/${encodeURIComponent(address)}`);
     }
   };
 

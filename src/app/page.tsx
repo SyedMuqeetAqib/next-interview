@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import PoolClient from "@/features/pool/components/PoolClient";
 import { fetchInitialTransactions } from "@/features/transactions/services/serverTransactions";
 import { fetchPoolInfo } from "@/features/pool/services/raydium";
@@ -26,13 +25,11 @@ export default async function Home() {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <PoolClient
-        poolAddress={poolAddress}
-        initialTransactions={initialTransactions}
-        chain={chain}
-        poolInfo={poolInfo}
-      />
-    </Suspense>
+    <PoolClient
+      poolAddress={poolAddress}
+      initialTransactions={initialTransactions}
+      chain={chain}
+      poolInfo={poolInfo}
+    />
   );
 }

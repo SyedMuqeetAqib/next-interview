@@ -204,7 +204,6 @@ export function parseTransaction(
       txHash: signature,
     };
   } catch (error) {
-    console.error("Error parsing transaction:", error);
     return null;
   }
 }
@@ -247,7 +246,6 @@ export async function getTransactionsForAddress(
 
     const data: HeliusRESTResponse | HeliusTransaction[] =
       await response.json();
-    console.log("🚀 ~ getTransactionsForAddress ~ data:", data);
 
     if (Array.isArray(data)) {
       if (data.length > 0) {

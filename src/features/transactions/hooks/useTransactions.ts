@@ -39,7 +39,6 @@ export function useTransactions(
         const result = await getTransactionsForAddress(poolAddress, chain, {
           limit: 10,
         });
-        console.log("🚀 ~ fetchTransactions ~ result:", result);
 
         // Parse transactions - result can be either string[] or HeliusTransaction[]
         const transformedTransactions: Transaction[] = result

@@ -27,31 +27,23 @@ export default function BuyWidget({
   const [spendAmount, setSpendAmount] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Get token symbol from pool info, fallback to pool address if not available
   const tokenSymbol = useMemo(() => {
     if (poolInfo?.tokenSymbol) {
       return poolInfo.tokenSymbol;
     }
     if (!poolAddress) return "TOKEN";
-    // Fallback: Extract first 4 characters of address and make uppercase for token symbol
     return poolAddress.slice(0, 4).toUpperCase();
   }, [poolInfo, poolAddress]);
 
-  // Calculate receive amount based on spend amount and pool price
   const receiveAmount = useMemo(() => {
     if (!spendAmount || parseFloat(spendAmount) <= 0) return "0.0";
     if (!poolInfo?.price) return "0.0";
 
     const spend = parseFloat(spendAmount);
-
-    // Use poolInfo.price for exchange rate
-    // Price represents how many quote tokens (e.g., PAYAI) per base token (e.g., WSOL)
-    // So if we spend WSOL, we receive: spend * price = quote tokens
     const calculated = (spend * poolInfo.price).toFixed(6);
     return parseFloat(calculated).toString();
   }, [spendAmount, poolInfo, poolAddress]);
 
-  // Get native token symbol from pool info, fallback to chain-based default
   const nativeTokenSymbol = useMemo(() => {
     if (poolInfo?.baseTokenSymbol) {
       return poolInfo.baseTokenSymbol;
@@ -59,7 +51,6 @@ export default function BuyWidget({
     return effectiveChain === SUPPORTED_CHAINS.SOLANA ? "SOL" : "ETH";
   }, [poolInfo, effectiveChain]);
 
-  // Get token logos
   const tokenLogo = poolInfo?.tokenLogo || null;
   const baseTokenLogo = poolInfo?.baseTokenLogo || null;
 
@@ -75,12 +66,9 @@ export default function BuyWidget({
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    // Optionally reset the form after successful transaction
-    // setSpendAmount("");
   };
 
-  // Mock max balance (fake functionality)
-  const maxBalance = "10.5"; // Mock wallet balance
+  const maxBalance = "10.5";
 
   const handleMaxClick = () => {
     setSpendAmount(maxBalance);
@@ -89,7 +77,6 @@ export default function BuyWidget({
   return (
     <>
       <div className="rounded-xl border border-primary/20 bg-card/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 shadow-inner">
-        {/* Connected Wallet Indicator */}
         <div className="flex items-center justify-between mb-3 sm:mb-4">
           <h2 className="text-base sm:text-lg font-semibold text-foreground">
             Buy Tokens
@@ -114,7 +101,6 @@ export default function BuyWidget({
                       height={16}
                       className="rounded-full"
                       onError={(e) => {
-                        // Hide image on error
                         e.currentTarget.style.display = "none";
                       }}
                     />
@@ -161,7 +147,6 @@ export default function BuyWidget({
                     height={16}
                     className="rounded-full"
                     onError={(e) => {
-                      // Hide image on error
                       e.currentTarget.style.display = "none";
                     }}
                   />
@@ -191,7 +176,6 @@ export default function BuyWidget({
             Buy
           </Button>
 
-          {/* Terms and Conditions */}
           <div className="pt-2 border-t border-border">
             <p className="text-xs text-muted-foreground text-center">
               By continuing, you agree to our{" "}
@@ -199,7 +183,6 @@ export default function BuyWidget({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  // Fake functionality - could open a modal or navigate
                   alert("Terms of Service");
                 }}
                 className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors inline-flex items-center gap-1"
@@ -212,7 +195,6 @@ export default function BuyWidget({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  // Fake functionality - could open a modal or navigate
                   alert("Privacy Policy");
                 }}
                 className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors inline-flex items-center gap-1"

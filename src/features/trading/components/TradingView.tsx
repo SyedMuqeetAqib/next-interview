@@ -19,45 +19,36 @@ function TradingViewWidget({
   useEffect(() => {
     if (!container.current) return;
 
-    // Completely clear the container to remove any existing widget
     while (container.current.firstChild) {
       container.current.removeChild(container.current.firstChild);
     }
 
-    // For Solana pools, use DexScreener with pool address (as specified in goal.md)
     if (chain === SUPPORTED_CHAINS.SOLANA && poolAddress) {
-      // DexScreener iframe embed for Solana pools
       const iframe = document.createElement("iframe");
       iframe.src = `https://dexscreener.com/solana/${poolAddress}?embed=1&theme=dark&trades=0&info=0`;
       iframe.style.width = "100%";
       iframe.style.height = "100%";
       iframe.style.border = "none";
-      iframe.style.borderRadius = "0.5rem"; // Match rounded-lg (8px)
+      iframe.style.borderRadius = "0.5rem";
       iframe.setAttribute("loading", "lazy");
       iframe.title = "DexScreener Chart";
       container.current.appendChild(iframe);
       return;
     }
 
-    // For Ethereum or fallback, use TradingView with token symbols
-    // Build symbol string from token symbols if available, otherwise use defaults
     let symbol: string;
     if (baseTokenSymbol && quoteTokenSymbol) {
-      // TradingView format: BASE/QUOTE (e.g., SOL/USD, ETH/USDT)
-      // For DEX pairs, we might need exchange prefix, but let's try without first
       symbol = `${baseTokenSymbol}${quoteTokenSymbol}`.toUpperCase();
     } else {
-      // Fallback to chain-based defaults
       symbol = chain === SUPPORTED_CHAINS.SOLANA ? "SOLUSD" : "ETHUSD";
     }
 
-    // Recreate the widget container div that TradingView expects
     const widgetDiv = document.createElement("div");
     widgetDiv.className = "tradingview-widget-container__widget";
     widgetDiv.style.height = "calc(100% - 32px)";
     widgetDiv.style.width = "100%";
-    widgetDiv.style.borderRadius = "0.5rem"; // Match rounded-lg (8px)
-    widgetDiv.style.overflow = "hidden"; // Clip content to border radius
+    widgetDiv.style.borderRadius = "0.5rem";
+    widgetDiv.style.overflow = "hidden";
     container.current.appendChild(widgetDiv);
 
     const script = document.createElement("script");
@@ -93,7 +84,6 @@ function TradingViewWidget({
     container.current.appendChild(script);
 
     return () => {
-      // Cleanup: clear the entire container when component unmounts or props change
       if (container.current) {
         while (container.current.firstChild) {
           container.current.removeChild(container.current.firstChild);
@@ -109,12 +99,10 @@ function TradingViewWidget({
       style={{
         height: "100%",
         width: "100%",
-        borderRadius: "0.5rem", // Match rounded-lg (8px)
-        overflow: "hidden", // Clip content to border radius
+        borderRadius: "0.5rem",
+        overflow: "hidden",
       }}
-    >
-      {/* Widget will be injected by useEffect */}
-    </div>
+    ></div>
   );
 }
 

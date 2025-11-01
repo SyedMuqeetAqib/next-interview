@@ -23,27 +23,20 @@ export default function PoolClient({
   poolInfo,
 }: PoolClientProps) {
   const { chain: contextChain } = useApp();
-  console.log("🚀 ~ PoolPage ~ poolAddress:", poolAddress);
-
-  // Use chain from props (server-side) but allow context to override on client
-  // For polling, use context chain which may be updated by user
   const effectiveChain = contextChain || chain;
 
-  // Check for transaction errors using the hook with initial data
   const { error: transactionError } = useTransactions(
     poolAddress,
     effectiveChain,
     initialTransactions
   );
 
-  // Check if error is related to invalid address (HTTP 400 with "invalid address" message)
   const isInvalidAddressError =
     transactionError &&
     (transactionError.includes("400") ||
       transactionError.toLowerCase().includes("invalid address") ||
       transactionError.includes("-32600"));
 
-  // Show full-page error if there's an invalid address error
   if (isInvalidAddressError) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6">
@@ -83,12 +76,8 @@ export default function PoolClient({
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6">
-      {/* <PoolHeader /> */}
-
       <div className="grid gap-4 sm:gap-5 lg:gap-6">
-        {/* Chart & Buy Widget Side by Side */}
         <div className="grid gap-4 sm:gap-5 lg:gap-6 lg:grid-cols-3">
-          {/* Chart Section - Takes 2 columns */}
           <div className="lg:col-span-2 rounded-xl border border-primary/20 bg-card/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 shadow-inner">
             <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
               Price Chart
@@ -103,7 +92,6 @@ export default function PoolClient({
             </div>
           </div>
 
-          {/* Buy Widget - Takes 1 column */}
           <BuyWidget
             poolAddress={poolAddress}
             chain={effectiveChain}
@@ -111,7 +99,6 @@ export default function PoolClient({
           />
         </div>
 
-        {/* Transactions Table - Full width below */}
         <TransactionTable
           poolAddress={poolAddress}
           initialTransactions={initialTransactions}

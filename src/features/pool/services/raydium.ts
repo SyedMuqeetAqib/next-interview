@@ -1,11 +1,6 @@
 import { RAYDIUM_BASE_URL } from "@/shared/constants/raydiumUrls.constant";
 import { RaydiumApiResponse, PoolInfo } from "../types/raydium.type";
 
-/**
- * Fetches pool information from Raydium API
- * @param poolId - The pool ID (address) to fetch
- * @returns Pool information including token symbol, name, logo, and price
- */
 export async function fetchPoolInfo(poolId: string): Promise<PoolInfo | null> {
   try {
     const response = await fetch(
@@ -15,29 +10,21 @@ export async function fetchPoolInfo(poolId: string): Promise<PoolInfo | null> {
         headers: {
           accept: "application/json",
         },
-        // Cache for 60 seconds to reduce API calls
         next: { revalidate: 60 },
       }
     );
 
     if (!response.ok) {
-      console.error(
-        `Failed to fetch pool info: ${response.status} ${response.statusText}`
-      );
       return null;
     }
 
     const data: RaydiumApiResponse = await response.json();
 
     if (!data.success || !data.data || data.data.length === 0) {
-      console.error("No pool data returned from API");
       return null;
     }
 
     const poolData = data.data[0];
-
-    // Determine which token is the quote token (usually the non-SOL token)
-    // mintB is typically the token being traded
     const quoteToken = poolData.mintB;
     const baseToken = poolData.mintA;
 
@@ -52,7 +39,6 @@ export async function fetchPoolInfo(poolId: string): Promise<PoolInfo | null> {
       poolId: poolData.id,
     };
   } catch (error) {
-    console.error("Error fetching pool info from Raydium API:", error);
     return null;
   }
 }

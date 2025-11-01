@@ -5,13 +5,11 @@ import { getTransactionsForAddress } from "../services/helius";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 import { SerializableTransaction } from "../services/serverTransactions";
 
-// hooks/useTransactions.ts
 export function useTransactions(
   poolAddress: string,
   chain: Chain,
   initialTransactions?: SerializableTransaction[]
 ) {
-  // Initialize with initial transactions if provided (convert ISO strings to Dates)
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     if (initialTransactions) {
       return initialTransactions.map((tx) => ({
@@ -34,22 +32,18 @@ export function useTransactions(
     const fetchTransactions = async () => {
       try {
         setError(null);
-        // Fetch transaction signatures
         const signatures = await getTransactionsForAddress(poolAddress, chain, {
           limit: 10,
         });
 
-        // Transform signatures into Transaction objects
-        // Note: You may need to fetch full transaction details to get
-        // buy/sell info, amounts, etc. For now, creating placeholder transactions
         const transformedTransactions: Transaction[] = signatures
           .slice(0, 10)
           .map((signature, index) => ({
-            time: new Date(Date.now() - index * 60000), // Mock time, descending
-            action: index % 2 === 0 ? "buy" : "sell", // Mock action
-            amountNative: (Math.random() * 5).toFixed(4), // Mock SOL amount
-            amountToken: (Math.random() * 1000).toFixed(2), // Mock token amount
-            wallet: signature.slice(0, 8) + "..." + signature.slice(-8), // Shortened wallet
+            time: new Date(Date.now() - index * 60000),
+            action: index % 2 === 0 ? "buy" : "sell",
+            amountNative: (Math.random() * 5).toFixed(4),
+            amountToken: (Math.random() * 1000).toFixed(2),
+            wallet: signature.slice(0, 8) + "..." + signature.slice(-8),
             txHash: signature,
           }));
 
@@ -63,17 +57,12 @@ export function useTransactions(
       }
     };
 
-    // Only fetch immediately if we don't have initial transactions
-    // Otherwise, start polling right away with initial data already loaded
     if (!initialTransactions) {
       fetchTransactions();
     }
 
-    // Set up polling for real-time updates (poll every 15 seconds)
-    // Start immediately - initialTransactions will be used on mount, then polling updates
     pollingIntervalRef.current = setInterval(fetchTransactions, 15000);
 
-    // Cleanup on unmount
     return () => {
       if (pollingIntervalRef.current) {
         clearInterval(pollingIntervalRef.current);

@@ -20,12 +20,10 @@ export default async function PoolPage({
 }: PoolPageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  // Decode the address to preserve case and handle URL encoding
   const poolAddress = resolvedParams.address
     ? decodeURIComponent(resolvedParams.address)
     : DEFAULT_ADDRESS_ON_LANDING_PAGE;
 
-  // Extract chain from search params, validate and default to SOLANA
   let chain = SUPPORTED_CHAINS.SOLANA;
   if (resolvedSearchParams.chain) {
     const chainParam = resolvedSearchParams.chain.toLowerCase();
@@ -37,25 +35,19 @@ export default async function PoolPage({
     }
   }
 
-  // Fetch initial transactions server-side
   let initialTransactions;
   try {
     initialTransactions = await fetchInitialTransactions(poolAddress, chain, {
       limit: 10,
     });
   } catch (error) {
-    // If server-side fetch fails, we'll let the client handle the error
-    // Pass undefined so client can show loading/error state
-    console.error("Server-side transaction fetch failed:", error);
     initialTransactions = undefined;
   }
 
-  // Fetch pool info from Raydium API server-side
   let poolInfo;
   try {
     poolInfo = await fetchPoolInfo(poolAddress);
   } catch (error) {
-    console.error("Server-side pool info fetch failed:", error);
     poolInfo = null;
   }
 

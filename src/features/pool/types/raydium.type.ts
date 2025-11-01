@@ -56,7 +56,6 @@ export interface RaydiumApiResponse {
   data: RaydiumPoolData[];
 }
 
-// Extracted pool info for component usage
 export interface PoolInfo {
   tokenSymbol: string;
   tokenName: string;

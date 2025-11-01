@@ -6,7 +6,6 @@ import TransactionTable from "@/features/transactions/components/TransactionTabl
 import { DEFAULT_ADDRESS_ON_LANDING_PAGE } from "@/shared/constants/raydiumUrls.constant";
 import { useApp } from "@/shared/contexts/AppContext";
 import { useTransactions } from "@/features/transactions/hooks/useTransactions";
-import PoolHeader from "./PoolHeader";
 import BuyWidget from "./BuyWidget";
 
 export default function PoolComponent() {
@@ -14,19 +13,15 @@ export default function PoolComponent() {
   const { chain } = useApp();
   const poolAddress =
     (params.address as string) ?? DEFAULT_ADDRESS_ON_LANDING_PAGE;
-  console.log("🚀 ~ PoolPage ~ poolAddress:", poolAddress);
 
-  // Check for transaction errors
   const { error: transactionError } = useTransactions(poolAddress, chain);
 
-  // Check if error is related to invalid address (HTTP 400 with "invalid address" message)
   const isInvalidAddressError =
     transactionError &&
     (transactionError.includes("400") ||
       transactionError.toLowerCase().includes("invalid address") ||
       transactionError.includes("-32600"));
 
-  // Show full-page error if there's an invalid address error
   if (isInvalidAddressError) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6">
@@ -66,12 +61,8 @@ export default function PoolComponent() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6">
-      {/* <PoolHeader /> */}
-
       <div className="grid gap-4 sm:gap-5 lg:gap-6">
-        {/* Chart & Buy Widget Side by Side */}
         <div className="grid gap-4 sm:gap-5 lg:gap-6 lg:grid-cols-3">
-          {/* Chart Section - Takes 2 columns */}
           <div className="lg:col-span-2 rounded-xl border border-primary/10 bg-card p-4 sm:p-5 lg:p-6 backdrop-blur-sm">
             <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
               Price Chart
@@ -81,11 +72,9 @@ export default function PoolComponent() {
             </div>
           </div>
 
-          {/* Buy Widget - Takes 1 column */}
           <BuyWidget poolAddress={poolAddress} chain={chain} poolInfo={null} />
         </div>
 
-        {/* Transactions Table - Full width below */}
         <TransactionTable poolAddress={poolAddress} />
       </div>
     </div>

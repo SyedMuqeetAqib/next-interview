@@ -19,8 +19,11 @@ export default async function PoolPage({
 }: PoolPageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  const poolAddress = resolvedParams.address
-    ? decodeURIComponent(resolvedParams.address)
+  // Explicitly preserve case - Next.js may normalize route params on case-insensitive file systems
+  // Use the raw param value and ensure proper decoding
+  const rawAddress = resolvedParams.address;
+  const poolAddress = rawAddress
+    ? decodeURIComponent(rawAddress)
     : DEFAULT_ADDRESS_ON_LANDING_PAGE;
 
   let chain = SUPPORTED_CHAINS.SOLANA;

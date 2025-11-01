@@ -1,6 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import TradingViewWidget from "@/features/trading/components/TradingView";
 import TransactionTable from "@/features/transactions/components/TransactionTable";
 import { DEFAULT_ADDRESS_ON_LANDING_PAGE } from "@/shared/constants/raydiumUrls.constant";
@@ -10,9 +11,29 @@ import BuyWidget from "./BuyWidget";
 
 export default function PoolComponent() {
   const params = useParams();
+  const pathname = usePathname();
   const { chain } = useApp();
-  const poolAddress =
-    (params.address as string) ?? DEFAULT_ADDRESS_ON_LANDING_PAGE;
+
+  // Get address from pathname to preserve original case
+  // useParams() may return lowercase on case-insensitive file systems
+  const [poolAddress, setPoolAddress] = useState<string>(() => {
+    if (typeof window !== "undefined" && pathname) {
+      const match = pathname.match(/^\/pool\/([^/?]+)/);
+      if (match && match[1]) {
+        return decodeURIComponent(match[1]);
+      }
+    }
+    return (params.address as string) ?? DEFAULT_ADDRESS_ON_LANDING_PAGE;
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && pathname) {
+      const match = pathname.match(/^\/pool\/([^/?]+)/);
+      if (match && match[1]) {
+        setPoolAddress(decodeURIComponent(match[1]));
+      }
+    }
+  }, [pathname]);
 
   const { error: transactionError } = useTransactions(poolAddress, chain);
 

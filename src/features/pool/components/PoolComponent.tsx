@@ -77,10 +77,7 @@ export default function PoolComponent() {
               Price Chart
             </h2>
             <div className="h-80 sm:h-96 flex items-center justify-center text-muted-foreground rounded-lg bg-muted/30 border border-border/50">
-              <TradingViewWidget
-                baseSymbol={chain === "solana" ? "SOL" : "ETH"}
-                quoteSymbol="ETH"
-              />
+              <TradingViewWidget poolAddress={poolAddress} chain={chain} />
             </div>
           </div>
 

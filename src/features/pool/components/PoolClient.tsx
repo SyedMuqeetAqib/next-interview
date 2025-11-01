@@ -95,10 +95,10 @@ export default function PoolClient({
             </h2>
             <div className="h-80 sm:h-96 flex items-center justify-center text-muted-foreground rounded-lg bg-muted/30 border border-border/50">
               <TradingViewWidget
-                baseSymbol={
-                  effectiveChain === SUPPORTED_CHAINS.SOLANA ? "SOL" : "ETH"
-                }
-                quoteSymbol="ETH"
+                poolAddress={poolAddress}
+                chain={effectiveChain}
+                baseTokenSymbol={poolInfo?.baseTokenSymbol}
+                quoteTokenSymbol={poolInfo?.tokenSymbol}
               />
             </div>
           </div>

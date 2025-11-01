@@ -1,27 +1,53 @@
 import React, { useEffect, useRef, memo } from "react";
+import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 
 interface TradingViewWidgetProps {
-  baseSymbol: string;
-  quoteSymbol: string;
+  poolAddress?: string;
+  chain: string;
+  baseTokenSymbol?: string;
+  quoteTokenSymbol?: string;
 }
 
 function TradingViewWidget({
-  baseSymbol,
-  quoteSymbol,
+  poolAddress,
+  chain,
+  baseTokenSymbol,
+  quoteTokenSymbol,
 }: TradingViewWidgetProps) {
   const container = useRef<HTMLDivElement>(null);
-
-  // Concatenate the two symbols
-  const symbol = `${baseSymbol}${quoteSymbol}`.toUpperCase();
 
   useEffect(() => {
     if (!container.current) return;
 
-    // Completely clear the container to remove any existing TradingView widget
-    // TradingView creates more than just a script - it creates iframes and other DOM elements
-    // We need to remove ALL children (scripts, iframes, divs) to prevent duplicate widgets
+    // Completely clear the container to remove any existing widget
     while (container.current.firstChild) {
       container.current.removeChild(container.current.firstChild);
+    }
+
+    // For Solana pools, use DexScreener with pool address (as specified in goal.md)
+    if (chain === SUPPORTED_CHAINS.SOLANA && poolAddress) {
+      // DexScreener iframe embed for Solana pools
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://dexscreener.com/solana/${poolAddress}?embed=1&theme=dark&trades=0&info=0`;
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+      iframe.setAttribute("loading", "lazy");
+      iframe.title = "DexScreener Chart";
+      container.current.appendChild(iframe);
+      return;
+    }
+
+    // For Ethereum or fallback, use TradingView with token symbols
+    // Build symbol string from token symbols if available, otherwise use defaults
+    let symbol: string;
+    if (baseTokenSymbol && quoteTokenSymbol) {
+      // TradingView format: BASE/QUOTE (e.g., SOL/USD, ETH/USDT)
+      // For DEX pairs, we might need exchange prefix, but let's try without first
+      symbol = `${baseTokenSymbol}${quoteTokenSymbol}`.toUpperCase();
+    } else {
+      // Fallback to chain-based defaults
+      symbol = chain === SUPPORTED_CHAINS.SOLANA ? "SOLUSD" : "ETHUSD";
     }
 
     // Recreate the widget container div that TradingView expects
@@ -64,14 +90,14 @@ function TradingViewWidget({
     container.current.appendChild(script);
 
     return () => {
-      // Cleanup: clear the entire container when component unmounts or symbol changes
+      // Cleanup: clear the entire container when component unmounts or props change
       if (container.current) {
         while (container.current.firstChild) {
           container.current.removeChild(container.current.firstChild);
         }
       }
     };
-  }, [symbol]);
+  }, [poolAddress, chain, baseTokenSymbol, quoteTokenSymbol]);
 
   return (
     <div
@@ -79,7 +105,7 @@ function TradingViewWidget({
       ref={container}
       style={{ height: "100%", width: "100%" }}
     >
-      {/* This div will be recreated by the useEffect to ensure clean state */}
+      {/* Widget will be injected by useEffect */}
     </div>
   );
 }

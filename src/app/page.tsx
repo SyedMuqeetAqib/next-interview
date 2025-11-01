@@ -1,6 +1,6 @@
 import PoolClient from "@/features/pool/components/PoolClient";
 import { fetchInitialTransactions } from "@/features/transactions/services/serverTransactions";
-import { fetchPoolInfo } from "@/features/pool/services/raydium";
+import { fetchPoolInfo } from "@/features/pool/services/dexscreener";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 import { DEFAULT_ADDRESS_ON_LANDING_PAGE } from "@/shared/constants/raydiumUrls.constant";
 

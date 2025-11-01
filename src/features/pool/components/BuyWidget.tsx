@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import TransactionModal from "./TransactionModal";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 import { cn } from "@/lib/utils";
-import { PoolInfo } from "../types/raydium.type";
+import { PoolInfo } from "../types/dexscreener.type";
 
 interface BuyWidgetProps {
   poolAddress: string;

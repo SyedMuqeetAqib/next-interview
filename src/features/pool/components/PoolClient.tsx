@@ -7,7 +7,7 @@ import { useTransactions } from "@/features/transactions/hooks/useTransactions";
 import BuyWidget from "./BuyWidget";
 import { SerializableTransaction } from "@/features/transactions/services/serverTransactions";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
-import { PoolInfo } from "../types/raydium.type";
+import { PoolInfo } from "../types/dexscreener.type";
 
 interface PoolClientProps {
   poolAddress: string;

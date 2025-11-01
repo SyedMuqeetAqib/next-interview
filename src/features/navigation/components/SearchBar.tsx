@@ -12,6 +12,7 @@ const SearchBar = () => {
       const address = searchValue.trim();
       // Use encodeURIComponent to preserve case in the URL
       router.push(`/pool/${encodeURIComponent(address)}`);
+      setSearchValue("");
     }
   };
 
@@ -21,6 +22,7 @@ const SearchBar = () => {
       const address = searchValue.trim();
       // Use encodeURIComponent to preserve case in the URL
       router.push(`/pool/${encodeURIComponent(address)}`);
+      setSearchValue("");
     }
   };
 

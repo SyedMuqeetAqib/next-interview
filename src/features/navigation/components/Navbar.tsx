@@ -3,6 +3,7 @@
 import { useApp } from "@/shared/contexts/AppContext";
 import { SUPPORTED_CHAINS } from "@/shared/constants/supportedChains.constant";
 import SearchBar from "./SearchBar";
+import Link from "next/link";
 
 export default function Navbar() {
   const { chain, setChain } = useApp();
@@ -12,9 +13,11 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         {/* Logo */}
         <div className="flex items-center gap-6 sm:gap-8">
-          <h1 className="text-lg sm:text-xl font-semibold text-primary drop-shadow-sm hover:text-primary/80 transition-colors">
-            Mockswap
-          </h1>
+          <Link href="/">
+            <h1 className="text-lg sm:text-xl font-semibold text-primary drop-shadow-sm hover:text-primary/80 transition-colors">
+              Mockswap
+            </h1>
+          </Link>
 
           {/* Chain Toggle */}
           <div className="flex items-center gap-1 rounded-lg bg-secondary p-1 border border-border">

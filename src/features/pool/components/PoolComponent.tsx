@@ -85,7 +85,7 @@ export default function PoolComponent() {
           </div>
 
           {/* Buy Widget - Takes 1 column */}
-          <BuyWidget poolAddress={poolAddress} chain={chain} />
+          <BuyWidget poolAddress={poolAddress} chain={chain} poolInfo={null} />
         </div>
 
         {/* Transactions Table - Full width below */}

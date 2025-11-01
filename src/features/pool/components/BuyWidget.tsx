@@ -40,24 +40,14 @@ export default function BuyWidget({
   // Calculate receive amount based on spend amount and pool price
   const receiveAmount = useMemo(() => {
     if (!spendAmount || parseFloat(spendAmount) <= 0) return "0.0";
+    if (!poolInfo?.price) return "0.0";
 
     const spend = parseFloat(spendAmount);
 
-    // Use real price from pool info if available
-    if (poolInfo?.price) {
-      // Price represents how many quote tokens (e.g., PAYAI) per base token (e.g., WSOL)
-      // So if we spend WSOL, we receive: spend * price = quote tokens
-      const calculated = (spend * poolInfo.price).toFixed(6);
-      return parseFloat(calculated).toString();
-    }
-
-    // Fallback: Use a simple ratio based on pool address hash
-    const addressSum = poolAddress
-      .split("")
-      .reduce((sum, char) => sum + char.charCodeAt(0), 0);
-    const exchangeRate = (addressSum % 100) + 50; // Rate between 50-150 tokens per native token
-
-    const calculated = (spend * exchangeRate).toFixed(6);
+    // Use poolInfo.price for exchange rate
+    // Price represents how many quote tokens (e.g., PAYAI) per base token (e.g., WSOL)
+    // So if we spend WSOL, we receive: spend * price = quote tokens
+    const calculated = (spend * poolInfo.price).toFixed(6);
     return parseFloat(calculated).toString();
   }, [spendAmount, poolInfo, poolAddress]);
 
